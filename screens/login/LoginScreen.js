@@ -4,10 +4,7 @@ import {
     Text,
     View,
     TextInput,
-    TouchableOpacity,
-    Image,
-    StatusBar,
-    LayoutAnimation,
+    TouchableOpacity
 } from "react-native";
 
 export default class LoginScreen extends React.Component {
@@ -19,7 +16,7 @@ export default class LoginScreen extends React.Component {
     };
 
     handleLogin = () => {
-        alert("ok")
+      
     };
 
     render(){

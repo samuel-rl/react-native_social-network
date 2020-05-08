@@ -3,9 +3,6 @@ import { View, StyleSheet } from "react-native";
 import {
     useTheme,
     Avatar,
-    Title,
-    Caption,
-    Paragraph,
     Drawer,
     Text,
     TouchableRipple,
@@ -13,7 +10,6 @@ import {
 } from "react-native-paper";
 import { DrawerItem, DrawerContentScrollView } from "@react-navigation/drawer";
 import IconFeather from "react-native-vector-icons/Feather";
-import { ThemeProvider } from "@react-navigation/native";
 
 export function DrawerContent(props) {
     const paperTheme = useTheme();
@@ -28,10 +24,7 @@ export function DrawerContent(props) {
                 <View style={styles.drawerContent}>
                     <View style={styles.userInfoSection}>
                         <Avatar.Image
-                            source={{
-                                uri:
-                                    "https://assets.materialup.com/uploads/b78ca002-cd6c-4f84-befb-c09dd9261025/preview.png"
-                            }}
+                            source={require('../assets/avatar.png')}
                             size={200}
                         />
                     </View>

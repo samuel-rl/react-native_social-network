@@ -1,15 +1,16 @@
 import React from "react";
-import { StyleSheet, Text, View, ActivityIndicator } from "react-native";
+import { StyleSheet, Text, View, ActivityIndicator} from "react-native";
 
 import firebase from "firebase";
-import Fire from "../tools/Fire";
 
 export default class SplashScreen extends React.Component{
-    /*componentDidMount(){
+    componentDidMount(){
         firebase.auth().onAuthStateChanged(user => {
-            this.props.navigation.navigate(user ? "App" : "App")
+            user ?  this.props.toggleAuth(true) : this.props.toggleAuth(false)
         });
-    }*/
+    }
+
+
 
     render(){
         return(
@@ -26,5 +27,17 @@ const styles = StyleSheet.create({
       flex: 1,
       alignItems: 'center',
       justifyContent: 'center',
+    },
+    button: {
+        marginHorizontal: 30,
+        backgroundColor: "#fcbf1e",
+        borderRadius: 10,
+        height: 60,
+        alignItems: "center",
+        justifyContent: "center",
+    },
+    textButton: {
+        color: "#FFF",
+        fontWeight: "500"
     },
   });
