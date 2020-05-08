@@ -6,6 +6,7 @@ import {
     TextInput,
     TouchableOpacity
 } from "react-native";
+import firebase from 'firebase';
 
 export default class LoginScreen extends React.Component {
 
@@ -16,7 +17,9 @@ export default class LoginScreen extends React.Component {
     };
 
     handleLogin = () => {
-      
+        const { email, password } = this.state;
+        firebase.auth().signInWithEmailAndPassword(email, password)
+        .catch((error) => this.setState({ errorMessage: error.message }));
     };
 
     render(){

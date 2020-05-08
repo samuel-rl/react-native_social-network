@@ -10,6 +10,8 @@ import {
 } from "react-native-paper";
 import { DrawerItem, DrawerContentScrollView } from "@react-navigation/drawer";
 import IconFeather from "react-native-vector-icons/Feather";
+import Fire from "../tools/Fire";
+
 
 export function DrawerContent(props) {
     const paperTheme = useTheme();
@@ -17,6 +19,10 @@ export function DrawerContent(props) {
     const toggleNotification = () => {
         alert("Pas encore implémenté");
     };
+
+    logout = () => {
+        Fire.shared.signOut();
+    }
 
     return (
         <View style={{ flex: 1 }}>
@@ -80,7 +86,8 @@ export function DrawerContent(props) {
                 </View>
             </DrawerContentScrollView>
             <Drawer.Section>
-                <View style={StyleSheet.logoutSection}>
+                <View style={StyleSheet.logoutSection}
+                >
                     <DrawerItem
                         icon={({ color, size }) =>
                             <IconFeather
@@ -89,6 +96,7 @@ export function DrawerContent(props) {
                                 size={size}
                             />}
                         label="Déconnexion"
+                        onPress={() => {logout();}}
                     />
                 </View>
             </Drawer.Section>

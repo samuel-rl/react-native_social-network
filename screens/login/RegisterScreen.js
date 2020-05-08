@@ -7,7 +7,10 @@ import {
     TouchableOpacity,
     Image
 } from "react-native";
-
+require("firebase/firestore");
+import Fire from "../../tools/Fire";
+import * as Permissions from "expo-permissions";
+import * as ImagePicker from "expo-image-picker";
 
 
 export default class RegisterScreen extends React.Component {
@@ -27,10 +30,31 @@ export default class RegisterScreen extends React.Component {
     };
 
     handleSignUp = () => {
-        
+        Fire.shared.createUser(this.state.user);
     };
 
+    getCameraPermission = async () => {
+        const {status} = await Permissions.askAsync(Permissions.CAMERA_ROLL);
 
+        if(status != "granted"){
+            alert("Il besoin de la camera");
+        }
+    }
+
+    handlePickAvatar = async () => {
+        this.getCameraPermission();
+
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes : ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            aspect: [1, 1]
+        });
+
+        if(!result.cancelled) {
+            this.setState({user : {...this.state.user, avatar: result.uri}})
+        }
+
+    }
 
     render() {
         return (

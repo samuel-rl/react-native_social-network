@@ -18,6 +18,58 @@ var firebaseConfig = {
         firebase.initializeApp(firebaseConfig);
     }
 
+    createUser = async (user) => {
+        let remoteUri = null;
+        try {
+            await firebase
+                .auth()
+                .createUserWithEmailAndPassword(user.email, user.password);
+
+            let db = this.firestore.collection("users").doc(this.uid);
+
+            db.set({
+                name: user.name,
+                firstname: user.firstname,
+                email: user.email,
+                avatar: null,
+            });
+
+            if (user.avatar) {
+                remoteUri = await this.uploadPhotoAsync(
+                    user.avatar,
+                    `avatars/${this.uid}`
+                );
+                db.set({ avatar: remoteUri }, { merge: true });
+            }
+
+            firebase.database().ref().child(`Users/${this.uid}`).set(user);
+
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    uploadPhotoAsync = async (uri, filename) => {
+        return new Promise(async (res, rej) => {
+            const response = await fetch(uri);
+            const file = await response.blob();
+
+            let upload = firebase.storage().ref(filename).put(file);
+
+            upload.on(
+                "state_changed",
+                (snapshot) => {},
+                (err) => {
+                    rej(err);
+                },
+                async () => {
+                    const url = await upload.snapshot.ref.getDownloadURL();
+                    res(url);
+                }
+            );
+        });
+    };
+
     signOut = () => {
         firebase.auth().signOut();
     };
@@ -39,5 +91,5 @@ var firebaseConfig = {
     }
 }
 
-Fire = new Fire();
+Fire.shared = new Fire();
 export default Fire;
