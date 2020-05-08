@@ -42,8 +42,6 @@ var firebaseConfig = {
                 db.set({ avatar: remoteUri }, { merge: true });
             }
 
-            firebase.database().ref().child(`Users/${this.uid}`).set(user);
-
         } catch (error) {
             console.log(error);
         }
@@ -86,9 +84,6 @@ var firebaseConfig = {
         return Date.now();
     }
 
-    get firebase(){
-        return firebase;
-    }
 }
 
 Fire.shared = new Fire();
