@@ -68,6 +68,87 @@ var firebaseConfig = {
         });
     };
 
+    searchUserByName = async (search) => {
+        return new Promise((resolve, reject) => {
+            const res = [];
+            let db = this.firestore.collection("users");
+            db.get()
+                .then((snapshot) => {
+                    snapshot.forEach((doc) => {
+                        const temp = doc.data();
+                        temp["uid"] = doc.id;              
+                        res.push(temp);
+                    });
+                })
+                .then(() => {
+                    const newData = res.filter((item) => {
+                        const itemData = `${item.name.toUpperCase()} ${item.firstname.toUpperCase()}`;
+                        const textData = search.toUpperCase();
+                        return itemData.includes(textData);
+                    });
+                    resolve(newData);
+                });
+        });
+    };
+
+    following = async (uid) => {
+        return new Promise((resolve, reject) => {
+            let db = this.firestore.collection("follow").doc(this.uid);
+        
+            db.get().then((snapshot) => {
+                res = snapshot.data();
+                    if(res === undefined){
+                        resolve(false);
+                    }else{
+                        if(uid in res){
+                            console.log(res)
+                            if(res[uid] == true){
+                                resolve(true);
+                            }else{
+                                resolve(false);
+                            }
+                        }
+                        else{
+                            resolve(false);
+                        }
+                    }
+                
+            })
+        })
+    }
+
+    follow(uid){
+        let db = this.firestore.collection("follow").doc(this.uid);
+        db.get().then((doc) => {
+            if(!doc.exists){
+                db.set({
+                    [uid] : true
+                });
+            }
+            else{
+                db.update({
+                    [uid] : true
+                })
+            }
+        })   
+    }
+
+    unfollow(uid){
+        let db = this.firestore.collection("follow").doc(this.uid);
+        db.get().then((doc) => {
+            if(!doc.exists){
+                db.set({
+                    [uid] : false
+                });
+            }
+            else{
+                db.update({
+                    [uid] : false
+                })
+            }
+        })   
+    }
+
     signOut = () => {
         firebase.auth().signOut();
     };
