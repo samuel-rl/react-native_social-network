@@ -153,7 +153,7 @@ export default class RegisterScreen extends React.Component {
                 >
                     <Text style={{ color: "#414959", fontSize: 13 }}>
                         {"Déja inscrit? "}
-                        <Text style={{ fontWeight: "500", color: "#fcbf1e" }}>
+                        <Text style={{ fontWeight: "500", color: "#FF6F69" }}>
                             Connexion
                         </Text>
                     </Text>
@@ -191,7 +191,7 @@ const styles = StyleSheet.create({
     },
     button: {
         marginHorizontal: 30,
-        backgroundColor: "#fcbf1e",
+        backgroundColor: "#c9c9ff",
         borderRadius: 4,
         height: 52,
         alignItems: "center",

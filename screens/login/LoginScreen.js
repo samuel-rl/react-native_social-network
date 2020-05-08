@@ -75,7 +75,7 @@ export default class LoginScreen extends React.Component {
                 >
                     <Text style={{ color: "#000", fontSize: 13 }}>
                         {"Pas encore inscrit? "}
-                        <Text style={{ fontWeight: "600", color: "#fcbf1e" }}>
+                        <Text style={{ fontWeight: "600", color: "#FF6F69" }}>
                             S'inscrire
                         </Text>
                     </Text>
@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
     },
     button: {
         marginHorizontal: 30,
-        backgroundColor: "#fcbf1e",
+        backgroundColor: "#c9c9ff",
         borderRadius: 10,
         height: 60,
         alignItems: "center",
