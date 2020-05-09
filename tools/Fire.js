@@ -68,6 +68,131 @@ var firebaseConfig = {
         });
     };
 
+    searchUserByName = async (search) => {
+        return new Promise((resolve, reject) => {
+            const res = [];
+            let db = this.firestore.collection("users");
+            db.get()
+                .then((snapshot) => {
+                    snapshot.forEach((doc) => {
+                        const temp = doc.data();
+                        temp["uid"] = doc.id;              
+                        res.push(temp);
+                    });
+                })
+                .then(() => {
+                    const newData = res.filter((item) => {
+                        const itemData = `${item.name.toUpperCase()} ${item.firstname.toUpperCase()}`;
+                        const textData = search.toUpperCase();
+                        return itemData.includes(textData);
+                    });
+                    resolve(newData);
+                });
+        });
+    };
+
+
+    getFollow = async () => {
+        return new Promise((resolve, reject) => {
+            const arrayRes = [];
+            let db = this.firestore.collection("users").doc(this.uid);
+            db.get().then((snapshot) => {
+                res = snapshot.data();
+                console.log(res["follow"])
+            })
+
+
+            resolve(arrayRes);
+        })
+    }
+
+
+
+    following = async (uid) => {
+        return new Promise((resolve, reject) => {
+            let db = this.firestore.collection("users").doc(this.uid);
+            db.get().then((snapshot) => {
+                res = snapshot.data();
+                if("follow" in res){
+                    obj = res['follow'];
+                    if(uid in obj){
+                        resolve(true);
+                    }else{
+                        resolve(false);
+                    }
+                }else{
+                    resolve(false);
+                }
+            })
+        })
+    }
+
+    /*
+    follow(uid){
+        let db = this.firestore.collection("users").doc(this.uid);
+        db.get().then((snapshot) => {
+            res = snapshot.data();
+            if("follow" in res){
+                obj = res['follow'];
+                obj[uid] = true;
+                res['follow'] = obj;
+            }else{
+                res['follow'] = {[uid] : true};
+            }
+            db.update(res)
+        })
+    }
+    */
+
+
+   follow(uid){
+    let db = this.firestore.collection("users").doc(this.uid);
+    db.get().then((snapshot) => {
+        res = snapshot.data();
+        if("follow" in res){
+            obj = res['follow'];
+
+            let db2 = this.firestore.collection("users").doc(uid);
+            db2.get().then((snapshot) => {
+                res2 = snapshot.data();
+                if("follow" in res2){
+                    delete res2.follow;
+                }
+                delete res2.email;
+                obj[uid] = res2;
+                res['follow'] = obj;
+                db.update(res);
+            })
+        }else{
+            let db2 = this.firestore.collection("users").doc(uid);
+            db2.get().then((snapshot) => {
+                res2 = snapshot.data();
+                if("follow" in res2){
+                    delete res2.follow;
+                }
+                delete res2.email;
+                res['follow'] = {[uid] : res2};
+                db.update(res);
+            })
+        }
+
+    })
+}
+
+
+    unfollow(uid){
+        let db = this.firestore.collection("users").doc(this.uid);
+        db.get().then((snapshot) => {
+            res = snapshot.data();
+
+                obj = res['follow'];
+                delete obj[uid]
+                res['follow'] = obj;
+
+            db.update(res)
+        })
+    }
+
     signOut = () => {
         firebase.auth().signOut();
     };
