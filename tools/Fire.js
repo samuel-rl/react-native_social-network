@@ -91,62 +91,106 @@ var firebaseConfig = {
         });
     };
 
-    following = async (uid) => {
+
+    getFollow = async () => {
         return new Promise((resolve, reject) => {
-            let db = this.firestore.collection("follow").doc(this.uid);
-        
+            const arrayRes = [];
+            let db = this.firestore.collection("users").doc(this.uid);
             db.get().then((snapshot) => {
                 res = snapshot.data();
-                    if(res === undefined){
-                        resolve(false);
+                console.log(res["follow"])
+            })
+
+
+            resolve(arrayRes);
+        })
+    }
+
+
+
+    following = async (uid) => {
+        return new Promise((resolve, reject) => {
+            let db = this.firestore.collection("users").doc(this.uid);
+            db.get().then((snapshot) => {
+                res = snapshot.data();
+                if("follow" in res){
+                    obj = res['follow'];
+                    if(uid in obj){
+                        resolve(true);
                     }else{
-                        if(uid in res){
-                            console.log(res)
-                            if(res[uid] == true){
-                                resolve(true);
-                            }else{
-                                resolve(false);
-                            }
-                        }
-                        else{
-                            resolve(false);
-                        }
+                        resolve(false);
                     }
-                
+                }else{
+                    resolve(false);
+                }
             })
         })
     }
 
+    /*
     follow(uid){
-        let db = this.firestore.collection("follow").doc(this.uid);
-        db.get().then((doc) => {
-            if(!doc.exists){
-                db.set({
-                    [uid] : true
-                });
+        let db = this.firestore.collection("users").doc(this.uid);
+        db.get().then((snapshot) => {
+            res = snapshot.data();
+            if("follow" in res){
+                obj = res['follow'];
+                obj[uid] = true;
+                res['follow'] = obj;
+            }else{
+                res['follow'] = {[uid] : true};
             }
-            else{
-                db.update({
-                    [uid] : true
-                })
-            }
-        })   
+            db.update(res)
+        })
     }
+    */
+
+
+   follow(uid){
+    let db = this.firestore.collection("users").doc(this.uid);
+    db.get().then((snapshot) => {
+        res = snapshot.data();
+        if("follow" in res){
+            obj = res['follow'];
+
+            let db2 = this.firestore.collection("users").doc(uid);
+            db2.get().then((snapshot) => {
+                res2 = snapshot.data();
+                if("follow" in res2){
+                    delete res2.follow;
+                }
+                delete res2.email;
+                obj[uid] = res2;
+                res['follow'] = obj;
+                db.update(res);
+            })
+        }else{
+            let db2 = this.firestore.collection("users").doc(uid);
+            db2.get().then((snapshot) => {
+                res2 = snapshot.data();
+                if("follow" in res2){
+                    delete res2.follow;
+                }
+                delete res2.email;
+                res['follow'] = {[uid] : res2};
+                db.update(res);
+            })
+        }
+
+    })
+}
+
 
     unfollow(uid){
-        let db = this.firestore.collection("follow").doc(this.uid);
-        db.get().then((doc) => {
-            if(!doc.exists){
-                db.set({
-                    [uid] : false
-                });
-            }
-            else{
-                db.update({
-                    [uid] : false
-                })
-            }
-        })   
+        let db = this.firestore.collection("users").doc(this.uid);
+        db.get().then((snapshot) => {
+            res = snapshot.data();
+
+                obj = res['follow'];
+                delete obj[uid]
+                res['follow'] = obj;
+
+            db.update(res)
+        })
     }
 
     signOut = () => {

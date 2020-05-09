@@ -17,13 +17,11 @@ class ProfileListItem extends Component {
     loadSearch = () =>{
         Fire.shared.following(this.props.uid).then(res => {
 			if(this.props.uid == Fire.shared.uid){
-                console.log("true")
                 this.setState({
                     follow: res,
                     me: true
                 });
             }else{
-                console.log("false")
                 this.setState({
                     follow: res,
                     me: false

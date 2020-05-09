@@ -32,12 +32,17 @@ export default class AddScreen extends React.Component {
 		this.setState({
 			value: text,
 		});
-
-		Fire.shared.searchUserByName(text).then(res => {
+		if(text == ""){
 			this.setState({
-				data: res,
+				data: myList,
 			});
-		});
+		}else{
+			Fire.shared.searchUserByName(text).then(res => {
+				this.setState({
+					data: res,
+				});
+			});
+		}
 	};
 
 	render() {

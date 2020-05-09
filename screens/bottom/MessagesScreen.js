@@ -24,6 +24,13 @@ const MessagesScreen = () => {
 	const [follows, setFollows] = useState(myList);
 	const [search, setSearch] = useState('');
 
+	React.useEffect(() => {
+		const user = Fire.shared.uid;
+		Fire.shared.getFollow(Fire.shared.uid).then((res) => {
+			//console.log(res)
+		})
+	}, []);
+
 	return (
 		<SafeAreaView style={styles.container}>
 			<View style={styles.containerInput}>
@@ -33,15 +40,11 @@ const MessagesScreen = () => {
 					placeholder="Rechercher quelqu'un..."
 					onChangeText={text => {
 						setSearch(text);
-						Fire.shared.searchUserByName(text).then(res => {
-							setFollows(res);
-						});
 					}}
 				/>
 			</View>
 			<FlatList
 				keyExtractor={(item, index) => `${index}`}
-				extraData={this.state}
 				data={follows}
 				showsVerticalScrollIndicator={false}
 				renderItem={({ item }) =>
