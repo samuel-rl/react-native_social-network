@@ -98,11 +98,13 @@ var firebaseConfig = {
             let db = this.firestore.collection("users").doc(this.uid);
             db.get().then((snapshot) => {
                 res = snapshot.data();
-                console.log(res["follow"])
+                
+                for (const [key, value] of Object.entries(res["follow"])) {
+                    value["uid"] = key
+                    arrayRes.push(value)
+                  }
+                resolve(arrayRes)
             })
-
-
-            resolve(arrayRes);
         })
     }
 

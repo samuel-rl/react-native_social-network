@@ -27,7 +27,7 @@ const MessagesScreen = () => {
 	React.useEffect(() => {
 		const user = Fire.shared.uid;
 		Fire.shared.getFollow(Fire.shared.uid).then((res) => {
-			//console.log(res)
+			setFollows(res)
 		})
 	}, []);
 

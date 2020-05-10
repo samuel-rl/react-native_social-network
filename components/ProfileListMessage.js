@@ -5,9 +5,15 @@ import { Avatar } from 'react-native-paper';
 import Fire from '../tools/Fire';
 
 class ProfileListMessage extends Component {
+
+	test = () => {
+		alert(this.props.name);
+	}
+
 	render() {
 		return (
-			<TouchableOpacity style={styles.container}>
+			<TouchableOpacity style={styles.container}
+			onPress={this.test}>
 				<View style={styles.avatar}>
 					<Avatar.Image
 						source={this.props.avatar ? { uri: this.props.avatar } : require('../assets/avatar.png')}
