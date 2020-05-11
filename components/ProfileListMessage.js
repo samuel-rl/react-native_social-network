@@ -7,7 +7,7 @@ import Fire from '../tools/Fire';
 class ProfileListMessage extends Component {
 
 	test = () => {
-		alert(this.props.name);
+		this.props.navigation.push('Conversation')
 	}
 
 	render() {
