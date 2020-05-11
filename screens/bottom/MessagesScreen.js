@@ -18,7 +18,7 @@ import ProfileListMessage from '../../components/ProfileListMessage';
 
 const myList = [];
 
-const MessagesScreen = () => {
+const MessagesScreen = ({navigation}) => {
 	const { colors } = useTheme();
 
 	const [follows, setFollows] = useState(myList);
@@ -48,7 +48,7 @@ const MessagesScreen = () => {
 				data={follows}
 				showsVerticalScrollIndicator={false}
 				renderItem={({ item }) =>
-					<ProfileListMessage uid={item.uid} name={item.name} firstname={item.firstname} avatar={item.avatar} />}
+					<ProfileListMessage navigation={navigation} uid={item.uid} name={item.name} firstname={item.firstname} avatar={item.avatar} />}
 			/>
 		</SafeAreaView>
 	);
